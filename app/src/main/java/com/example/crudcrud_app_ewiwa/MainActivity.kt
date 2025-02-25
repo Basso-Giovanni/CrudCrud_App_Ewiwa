@@ -85,7 +85,13 @@ fun ColumnExample() {
                     label = {Text("Aggiungi")},
                     onValueChange = {input = it}
                 )
-                Button(onClick = { }, modifier = Modifier.size(200.dp, 60.dp))
+                Button(onClick = {
+                    coroutineScope.launch {
+                        val newTodo = Todo(title = input, completed = false)
+                        apiService.addTodo(newTodo)
+                        todos = apiService.getTodos()
+                    }
+                }, modifier = Modifier.size(200.dp, 60.dp))
                 {
                     Text("POST", style = TextStyle(fontSize = 20.sp))
                 }
@@ -95,7 +101,16 @@ fun ColumnExample() {
         Box(modifier = Modifier.padding(16.dp))
         {
             Column {
-                Button(onClick = { },
+                Button(onClick = {
+                    coroutineScope.launch {
+                        if (todos.isNotEmpty()) {
+                            val firstTodo = todos.first()
+                            val updatedTodo = firstTodo.copy(completed = !firstTodo.completed)
+                            apiService.updateTodo(firstTodo._id!!, updatedTodo)
+                            todos = apiService.getTodos()
+                        }
+                    }   
+                },
                     modifier = Modifier
                         .padding(bottom = 16.dp)
                         .size(200.dp, 60.dp)
@@ -103,7 +118,14 @@ fun ColumnExample() {
                 {
                     Text("PUT", style = TextStyle(fontSize = 20.sp))
                 }
-                Button(onClick = { },
+                Button(onClick = {
+                    coroutineScope.launch {
+                        if (todos.isNotEmpty()) {
+                            apiService.deleteTodo(todos.first()._id!!)
+                            todos = apiService.getTodos()
+                        }
+                    }
+                },
                     modifier = Modifier.size(200.dp, 60.dp))
                 {
                     Text("DELETE", style = TextStyle(fontSize = 20.sp))

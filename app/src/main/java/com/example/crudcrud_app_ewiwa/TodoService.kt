@@ -21,7 +21,7 @@ interface TodoApiService {
 // Retrofit instance
 object RetrofitInstance {
     // Sostituiscilo con il tuo API KEY
-    private const val BASE_URL = "https://crudcrud.com/api/1db5bec4e81843008d34034cf77444b0/"
+    private const val BASE_URL = "https://crudcrud.com/api/7dad895f680f48049d4fe729f25390f2/" //se scade l'endpoint bisogna inserirne un altro
 
     val api: TodoApiService by lazy {
         Retrofit.Builder()
